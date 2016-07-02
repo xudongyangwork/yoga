@@ -1,3 +1,4 @@
+# coding:utf-8
 """
 Django settings for django_project_template project.
 
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'upload',
+    'main_site',
 ]
 
 MIDDLEWARE_CLASSES = [
