@@ -1,0 +1,71 @@
+<uwsgi>
+    <!--
+        参考:
+        1. http://uwsgi-docs.readthedocs.org/en/latest/Nginx.html
+        2. http://www.cnblogs.com/zhouej/archive/2012/03/25/2379646.html
+
+        需要定制: socket, workers, 替换: ${PROJECT_ROOT}
+
+    -->
+
+    <!-- socket绑定，在nginx中使用upstream  绑定ip, 端口: 如果不指定ip, 则绑定到所有的ip -->
+    <socket>:3630</socket>
+
+    <!-- http绑定，在nginx中使用upstream  绑定ip, 端口: 如果不指定ip, 则绑定到所有的ip -->
+    <!--
+    <stats>127.0.0.1:9090</stats>
+    <http-socket>127.0.0.1:3030</http-socket>
+    -->
+    <master/>
+
+    <!-- 工作目录, wsgi为工作目录下的一个文件: wsgi.py, 也可以有其他名字, chdir, pythonpath具体意义不清楚，反正设置为项目目录就OK -->
+    <chdir>${PROJECT_ROOT}</chdir>
+    <pythonpath>${PROJECT_ROOT}</pythonpath>
+    <module>wsgi</module>
+
+    <!-- 3s的timeout, 防止work执行某个任务耗费太多的时间 -->
+    <!-- <harakiri>3</harakiri> -->
+    <!-- cyadmin专用 -->
+
+
+    <!-- 启动4个进程 -->
+    <workers>4</workers>
+
+    <!-- 设置socket的监听队列大小（默认：100）。
+        每一个socket都有一个相关联的队列，请求会被放入其中等待进程来处理。当这个队列慢的时候，新来的请求就会被拒绝。
+        队列大小的最大值依赖于系统内核。
+    -->
+
+    <listen>8192</listen>
+
+    <!--
+        可以用于查询 uwsgi进程的状态, 例如: uwsgitop /tmp/stats.socket
+
+        在同一个机器上配置不同的uwsgi进程时注意设置不同的路径，并且注意文件权限问题。
+    -->
+
+    <stats>${PROJECT_ROOT}/log/stats.socket</stats>
+
+    <!-- 是否允许在uwsgi + django中使用thread, 最好禁用(否则逻辑的时序有点乱) -->
+    <enable-threads/>
+
+    <!-- 日志: 设置为一样即可 -->
+    <logto>${PROJECT_ROOT}/log/uwsgi/uwsgi.log</logto>
+    <daemonize>${PROJECT_ROOT}/log/uwsgi/uwsgi.log</daemonize>
+
+    <memory-report/>
+
+    <!-- 设置用于uwsgi包解析的内部缓存区大小。默认是4k。
+        如果你打算接受一个拥有很多请求头的大请求，你可以增加这个值到64k。
+    -->
+    <buffer-size>65535</buffer-size>
+
+    <!-- 配合nginx, 在django中处理POST请求时可以不读取request.POST，否则nginx会报错 -->
+    <post-buffering>1</post-buffering>
+
+    <!-- 虚拟内存空间: Address Space 太大也会重启对应的Worker -->
+    <reload-on-as>1200</reload-on-as>
+
+    <!-- 如果物理内存超过: 750M, 则重新加载进程 -->
+    <reload-on-rss>750</reload-on-rss>
+</uwsgi>
