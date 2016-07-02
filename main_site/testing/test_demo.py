@@ -12,3 +12,6 @@ class DemoTestCase(TestCase):
         """python manage.py test main_site.testing.test_demo.DemoTestCase.first_test"""
 
         self.assertEqual(1, 1)
+
+    def test_failure(self):
+        self.assertEqual(1, 2)
