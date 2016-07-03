@@ -42,7 +42,6 @@ def online_deploy(commit_id):
 
     with cd(ONLINE_DEPLOY_PATH):
         # 1. 将所有的本地修改直接revert
-        # i am local.
         run("git reset --hard")
         run("git fetch -p origin")
         current_step_num += 1
