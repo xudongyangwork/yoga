@@ -81,6 +81,7 @@ def online_deploy(commit_id):
         print_step_info(steps_num, current_step_num, "执行数据库的升级")
 
         # 8. 重启服务
-        run("sh scripts/uwsgi/restart.sh")
+        # sudo("fuser -k 3030/tcp")
+        run("nohup %s manage.py runserver 0.0.0.0:3030 > log/request.log&" % ONLINE_PYTHON_PATH)
         current_step_num += 1
         print_step_info(steps_num, current_step_num, "重启服务")

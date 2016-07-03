@@ -14,8 +14,8 @@
     -->
     <!-- http绑定，在nginx中使用upstream  绑定ip, 端口: 如果不指定ip, 则绑定到所有的ip -->
 
-    <stats>127.0.0.1:9090</stats>
-    <http-socket>127.0.0.1:3030</http-socket>
+    <stats>127.0.0.1:9099</stats>
+    <http-socket>3030</http-socket>
 
     <master/>
 
