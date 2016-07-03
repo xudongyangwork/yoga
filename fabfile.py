@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import os
 
 from colorama import Fore, Back, Style
-from fabric.api import local, settings, abort, cd, run, hosts, execute, run
+from fabric.api import local, settings, abort, cd, run, hosts, execute, run, sudo
 
 __author__ = 'xdy'
 
@@ -81,7 +81,6 @@ def online_deploy(commit_id):
         print_step_info(steps_num, current_step_num, "执行数据库的升级")
 
         # 8. 重启服务
-        run('fuser -k 8090/tcp')
-        run('%s manage.py runserver 0.0.0.0:8090')
+        run("sh scripts/uwsgi/restart.sh")
         current_step_num += 1
         print_step_info(steps_num, current_step_num, "重启服务")
